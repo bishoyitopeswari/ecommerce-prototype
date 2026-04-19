@@ -1,17 +1,9 @@
 # Architecture Decision Record (ADR)
 
-Status: Accepted
-Date: 2026-04-19
-Applies to: ecommerce-prototype
-Primary reference: [plan.md](plan.md)
-
 ## Purpose
 This document records the architecture and design decisions implemented for the ecommerce prototype, including why each choice was made, alternatives considered, and expected consequences.
 
-The decisions below are mapped to the phase plan in [plan.md](plan.md), which was used as the implementation roadmap from Phase 0 through Phase 13.
-
 ## Decision 1: Use a modular monolith with strict feature boundaries
-Plan traceability: Phase 1, Domain Boundaries section
 
 Decision:
 Organize the application by feature domains instead of technical layers, and enforce boundaries through feature public APIs.
@@ -30,7 +22,6 @@ Consequences:
 - Tradeoff: requires discipline in import boundaries and feature export surfaces.
 
 ## Decision 2: Use Material UI for component primitives
-Plan traceability: Objective, Phase 0, Phase 6-9 page implementations
 
 Decision:
 Build all page-level UI with Material UI components and icons.
