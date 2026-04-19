@@ -61,9 +61,21 @@ describe('ProductListPage', () => {
     expect(screen.getByText(/linen shirt/i)).toBeInTheDocument()
 
     await userEvent.clear(screen.getByLabelText(/search/i))
-    await userEvent.type(screen.getByLabelText(/category/i), 'Footwear')
+    await userEvent.click(screen.getByRole('combobox', { name: /category/i }))
+    await userEvent.click(await screen.findByRole('option', { name: 'Footwear' }))
 
     await waitFor(() => {
+      expect(screen.getByText(/trail running sneakers/i)).toBeInTheDocument()
+    })
+
+    await userEvent.click(screen.getByRole('combobox', { name: /category/i }))
+    expect(await screen.findByRole('option', { name: 'Footwear' })).toBeInTheDocument()
+    expect(await screen.findByRole('option', { name: 'Apparel' })).toBeInTheDocument()
+
+    await userEvent.click(await screen.findByRole('option', { name: 'All Categories' }))
+
+    await waitFor(() => {
+      expect(screen.getByText(/linen shirt/i)).toBeInTheDocument()
       expect(screen.getByText(/trail running sneakers/i)).toBeInTheDocument()
     })
   })

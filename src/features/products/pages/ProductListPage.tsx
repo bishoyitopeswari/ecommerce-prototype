@@ -6,8 +6,13 @@ import {
   CardContent,
   Chip,
   CircularProgress,
+  FormControl,
   Grid,
+  InputLabel,
+  MenuItem,
+  Select,
   Stack,
+  type SelectChangeEvent,
   TextField,
   Typography,
 } from '@mui/material'
@@ -21,13 +26,18 @@ export function ProductListPage() {
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState('')
 
+  const handleCategoryChange = (event: SelectChangeEvent<string>) => {
+    setCategory(event.target.value)
+  }
+
+  const allProductsQuery = useQuery(productListQueryOptions())
   const query = useQuery(productListQueryOptions({ search, category }))
   const error = query.error as ApiError | null
 
   const categories = useMemo(() => {
-    const set = new Set((query.data ?? []).map((item) => item.category))
+    const set = new Set((allProductsQuery.data ?? []).map((item) => item.category))
     return Array.from(set)
-  }, [query.data])
+  }, [allProductsQuery.data])
 
   return (
     <Card>
@@ -37,7 +47,23 @@ export function ProductListPage() {
         </Typography>
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mb: 2 }}>
           <TextField label="Search" value={search} onChange={(event) => setSearch(event.target.value)} fullWidth />
-          <TextField label="Category" value={category} onChange={(event) => setCategory(event.target.value)} fullWidth />
+          <FormControl fullWidth>
+            <InputLabel id="category-select-label">Category</InputLabel>
+            <Select
+              labelId="category-select-label"
+              id="category-select"
+              label="Category"
+              value={category}
+              onChange={handleCategoryChange}
+            >
+              <MenuItem value="">All Categories</MenuItem>
+              {categories.map((item) => (
+                <MenuItem key={item} value={item}>
+                  {item}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Stack>
 
         <Stack direction="row" spacing={1} sx={{ mb: 2, flexWrap: 'wrap' }}>
